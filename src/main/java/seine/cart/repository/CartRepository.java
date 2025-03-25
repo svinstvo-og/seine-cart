@@ -6,5 +6,5 @@ import seine.cart.entity.Cart;
 
 @Repository
 public interface CartRepository extends JpaRepository<Cart, Long> {
-    Cart findByUId(Long uId);
+    Cart findByUserId(Long uId);
 }

@@ -16,9 +16,9 @@ import lombok.Setter;
 public class Cart {
     @Id
     @JsonProperty("user-id")
-    private Long uId;
+    private Long userId;
 
     @JsonProperty("product-id")
-    private Long pId;
+    private Long productId;
     private int quantity;
 }
