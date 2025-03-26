@@ -1,7 +1,7 @@
-package seine.cart.service;
+package nakup.cart.service;
 
 import org.springframework.stereotype.Service;
-import seine.cart.repository.CartRepository;
+import nakup.cart.repository.CartRepository;
 
 @Service
 public class CartService {

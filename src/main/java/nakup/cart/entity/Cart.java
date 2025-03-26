@@ -1,10 +1,7 @@
-package seine.cart.entity;
+package nakup.cart.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +10,7 @@ import lombok.Setter;
 import java.util.List;
 
 @Entity
-@Table(name = "cartt")
+@Table(name = "cart")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -21,6 +18,8 @@ import java.util.List;
 public class Cart {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @JsonProperty("cart-id")
     private Long cartId;
 
     @JsonProperty("user-id")

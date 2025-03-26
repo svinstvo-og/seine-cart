@@ -1,4 +1,4 @@
-package seine.cart.dto;
+package nakup.cart.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
@@ -17,6 +17,6 @@ public class ProductAddRequest {
     @JsonProperty("user-id")
     private Long userId;
     @JsonProperty("unit-price")
-    private BigDecimal unitPrice;
+    private Double unitPrice;
     private Integer quantity;
 }

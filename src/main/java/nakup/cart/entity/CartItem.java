@@ -1,9 +1,6 @@
-package seine.cart.entity;
+package nakup.cart.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jdk.jfr.Timespan;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +11,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @Entity
-//@Table(name = "cart")
+@Table(name = "cart-item")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -27,7 +24,7 @@ public class CartItem {
 
     private Long productId;
     private int quantity;
-    private BigDecimal unitPrice;
+    private Double unitPrice;
 
     @jdk.jfr.Timestamp
     private Timestamp createdAt;
