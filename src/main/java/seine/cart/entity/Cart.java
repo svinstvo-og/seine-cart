@@ -13,7 +13,7 @@ import lombok.Setter;
 import java.util.List;
 
 @Entity
-//@Table(name = "cart")
+@Table(name = "cartt")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
