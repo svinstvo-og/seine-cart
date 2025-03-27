@@ -1,5 +1,6 @@
 package nakup.cart.controller;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import nakup.cart.dto.ItemDeleteRequest;
 import nakup.cart.repository.CartItemRepository;
 import nakup.cart.service.CartService;
@@ -50,5 +51,16 @@ public class CartController {
         Cart cart = cartService.loadCart(itemDeleteRequest.getUserId());
 
         cartService.deleteCartItem(cart, itemDeleteRequest.getItemId());
+    }
+
+    @GetMapping("/")
+    public List<CartItem> getCart(@RequestBody ItemDeleteRequest itemDeleteRequest) {
+        Cart cart = cartService.loadCart(itemDeleteRequest.getUserId());
+        List<CartItem> items = cart.getCartItem();
+
+        for (CartItem item : items) {
+            item.setCart(null);
+        }
+        return cart.getCartItem();
     }
 }
