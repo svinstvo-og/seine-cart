@@ -1,6 +1,7 @@
 package nakup.cart.controller;
 
 import nakup.cart.repository.CartItemRepository;
+import nakup.cart.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,29 +27,20 @@ public class CartController {
     @Autowired
     private CartItemRepository cartItemRepository;
 
-    @PostMapping("/")
-    public void addProduct(@RequestBody ProductAddRequest productAddRequest) {
-        CartItem cartItem = new CartItem();
+    @Autowired
+    private CartService cartService;
 
+    @PostMapping("/")
+    public void addItem(@RequestBody ProductAddRequest productAddRequest) {
+
+        CartItem cartItem = new CartItem();
         cartItem.setProductId(productAddRequest.getProductId());
         cartItem.setQuantity(productAddRequest.getQuantity());
         cartItem.setUnitPrice(productAddRequest.getUnitPrice());
         cartItem.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
 
-        cartItemRepository.save(cartItem);
+        Cart cart = cartService.loadCart(productAddRequest.getUserId());
 
-        Cart cart = cartRepository.findByUserId(productAddRequest.getUserId());
-
-        if (cart == null) {
-            cart = new Cart();
-            cart.setUserId(productAddRequest.getUserId());
-            cart.setCartItem(new ArrayList<>());
-        }
-
-        List<CartItem> items = cart.getCartItem();
-        items.add(cartItem);
-        cart.setCartItem(items);
-
-        cartRepository.save(cart);
+        cartService.addCartItem(cartItem, cart);
     }
 }

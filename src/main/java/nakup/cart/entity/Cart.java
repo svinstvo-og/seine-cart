@@ -18,13 +18,13 @@ import java.util.List;
 public class Cart {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty("cart-id")
     private Long cartId;
 
     @JsonProperty("user-id")
     private Long userId;
 
-    @OneToMany
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItem> cartItem;
 }

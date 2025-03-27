@@ -22,8 +22,11 @@ public class CartItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Cart cart;
+
     private Long productId;
-    private int quantity;
+    private Integer quantity;
     private Double unitPrice;
 
     @jdk.jfr.Timestamp
