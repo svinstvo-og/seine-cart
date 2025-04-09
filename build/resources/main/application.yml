@@ -20,5 +20,5 @@ eureka:
       defaultZone: http://localhost:8761/eureka
 
   instance:
-    app-name: order-service
+    app-name: cart-service
     instance-id: ${spring.application.name}:${random.value}
