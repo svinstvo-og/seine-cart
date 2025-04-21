@@ -2,9 +2,11 @@ package nakup.cart.controller;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import nakup.cart.dto.ItemDeleteRequest;
+import nakup.cart.dto.OrderFormResponse;
 import nakup.cart.repository.CartItemRepository;
 import nakup.cart.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.netflix.eureka.RestClientTimeoutProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import nakup.cart.dto.ProductAddRequest;
@@ -29,6 +31,8 @@ public class CartController {
 
     @Autowired
     private CartService cartService;
+    @Autowired
+    private RestClientTimeoutProperties restClientTimeoutProperties;
 
     @PostMapping("/")
     @ResponseStatus(HttpStatus.CREATED)
@@ -62,5 +66,12 @@ public class CartController {
             item.setCart(null);
         }
         return cart.getCartItem();
+    }
+
+    @GetMapping("/form-order")
+    public OrderFormResponse formOrder(@RequestBody ItemDeleteRequest itemDeleteRequest) {
+        Cart cart = cartService.loadCart(itemDeleteRequest.getUserId());
+
+        return cartService.form(cart);
     }
 }

@@ -1,5 +1,6 @@
 package nakup.cart.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jdk.jfr.Timespan;
 import lombok.AllArgsConstructor;
@@ -19,8 +20,9 @@ import java.sql.Timestamp;
 public class CartItem {
 
     @Id
+    @JsonProperty("cart-item-id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long cartItemId;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private Cart cart;

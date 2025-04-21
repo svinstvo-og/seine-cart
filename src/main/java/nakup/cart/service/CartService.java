@@ -2,12 +2,12 @@ package nakup.cart.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import nakup.cart.dto.ProductAddRequest;
+import nakup.cart.dto.OrderFormResponse;
+import nakup.cart.dto.OrderItemResponse;
 import nakup.cart.entity.Cart;
 import nakup.cart.entity.CartItem;
 import nakup.cart.repository.CartItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.sql.init.AbstractScriptDatabaseInitializer;
 import org.springframework.stereotype.Service;
 import nakup.cart.repository.CartRepository;
 
@@ -71,12 +71,29 @@ public class CartService {
     public void deleteCartItem(Cart cart, Long itemId) {
         List<CartItem> items = cart.getCartItem();
         for (CartItem item : items) {
-            if (item.getId().equals(itemId)) {
+            if (item.getCartItemId().equals(itemId)) {
                 items.remove(item);
                 System.out.println("ITEM WAS REMOVED");
                 return;
             }
         }
         System.out.println("ITEM WAS NOT FOUND");
+    }
+
+    public OrderFormResponse form(Cart cart) {
+        List<OrderItemResponse> orderItems = new ArrayList<>();
+        OrderItemResponse orderItemResponse = new OrderItemResponse();
+        for (CartItem item : cart.getCartItem()) {
+            orderItemResponse.setProductId(item.getProductId());
+            orderItemResponse.setQuantity(item.getQuantity());
+            orderItems.add(orderItemResponse);
+        }
+
+        OrderFormResponse response = new OrderFormResponse();
+        response.setCeratedAt(Timestamp.valueOf(LocalDateTime.now()));
+        response.setItems(orderItems);
+        response.setUserId(cart.getUserId());
+
+        return response;
     }
 }
