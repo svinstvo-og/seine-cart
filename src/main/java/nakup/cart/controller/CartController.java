@@ -5,6 +5,7 @@ import nakup.cart.dto.ItemDeleteRequest;
 import nakup.cart.dto.OrderFormResponse;
 import nakup.cart.repository.CartItemRepository;
 import nakup.cart.service.CartService;
+import nakup.cart.service.event.OrderEventPublisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.eureka.RestClientTimeoutProperties;
 import org.springframework.http.HttpStatus;
@@ -31,8 +32,12 @@ public class CartController {
 
     @Autowired
     private CartService cartService;
+
     @Autowired
     private RestClientTimeoutProperties restClientTimeoutProperties;
+
+    @Autowired
+    private OrderEventPublisher orderEventPublisher;
 
     @PostMapping("/")
     @ResponseStatus(HttpStatus.CREATED)
@@ -72,6 +77,10 @@ public class CartController {
     public OrderFormResponse formOrder(@RequestBody ItemDeleteRequest itemDeleteRequest) {
         Cart cart = cartService.loadCart(itemDeleteRequest.getUserId());
 
-        return cartService.form(cart);
+        OrderFormResponse order = cartService.form(cart);
+
+        orderEventPublisher.publishOrderCreatedEvent(order);
+
+        return order;
     }
 }
