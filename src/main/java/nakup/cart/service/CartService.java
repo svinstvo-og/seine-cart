@@ -1,11 +1,14 @@
 package nakup.cart.service;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import nakup.cart.dto.OrderFormResponse;
 import nakup.cart.dto.OrderItemResponse;
 import nakup.cart.entity.Cart;
 import nakup.cart.entity.CartItem;
+import nakup.cart.entity.event.OrderFormedEvent;
+import nakup.cart.entity.event.OrderItem;
 import nakup.cart.repository.CartItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +17,7 @@ import nakup.cart.repository.CartRepository;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -95,5 +99,14 @@ public class CartService {
         response.setUserId(cart.getUserId());
 
         return response;
+    }
+
+    public OrderFormedEvent formEvent(Cart cart) {
+        OrderFormResponse order = form(cart);
+        HashMap<Long, Integer> items = new HashMap<>();
+        for (OrderItemResponse item : order.getItems()) {
+            items.put(item.getProductId(), item.getQuantity());
+        }
+        return new OrderFormedEvent(order.getUserId(), order.getCeratedAt(), items);
     }
 }

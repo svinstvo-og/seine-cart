@@ -1,12 +1,13 @@
 package nakup.cart.service.event;
 
 import nakup.cart.dto.OrderFormResponse;
+import nakup.cart.entity.event.OrderFormedEvent;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
 public class OrderEventPublisher {
-    private static final String TOPIC = "order-created";
+    private static final String TOPIC = "order-formed";
 
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
@@ -14,7 +15,7 @@ public class OrderEventPublisher {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void publishOrderCreatedEvent(OrderFormResponse order) {
+    public void publishOrderCreatedEvent(OrderFormedEvent order) {
         kafkaTemplate.send(TOPIC, "order-created", order);
     }
 }

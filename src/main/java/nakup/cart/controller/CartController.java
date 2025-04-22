@@ -3,6 +3,7 @@ package nakup.cart.controller;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import nakup.cart.dto.ItemDeleteRequest;
 import nakup.cart.dto.OrderFormResponse;
+import nakup.cart.entity.event.OrderFormedEvent;
 import nakup.cart.repository.CartItemRepository;
 import nakup.cart.service.CartService;
 import nakup.cart.service.event.OrderEventPublisher;
@@ -73,11 +74,11 @@ public class CartController {
         return cart.getCartItem();
     }
 
-    @GetMapping("/form-order")
-    public OrderFormResponse formOrder(@RequestBody ItemDeleteRequest itemDeleteRequest) {
+    @PostMapping("/form-order")
+    public OrderFormedEvent formOrder(@RequestBody ItemDeleteRequest itemDeleteRequest) {
         Cart cart = cartService.loadCart(itemDeleteRequest.getUserId());
 
-        OrderFormResponse order = cartService.form(cart);
+        OrderFormedEvent order = cartService.formEvent(cart);
 
         orderEventPublisher.publishOrderCreatedEvent(order);
 
